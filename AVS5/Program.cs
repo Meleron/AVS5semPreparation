@@ -4,13 +4,38 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+#pragma warning disable CS0162
+
 namespace AVS5
 {
     class Program
     {
-        private const bool SHUFFLETHENTAKE = false;  // true - сначала тесты перемешиваются, потом из них берутся первые n штук. false - сначала из исходного списка берётся n тестов, потом они перемешиваются.
-        private const string LOCATION = "avs_demo.txt";
+        //######################
+        //#                    #
+        //#                    #
+        //#     НАСТРОЙКИ      #
+        //#                    #
+        //#                    #
+        //######################
+        private const bool SHUFFLETHENTAKE = true;  // true - сначала все тесты перемешиваются, потом из них берутся первые n штук. false - сначала из исходного упорядоченного списка берётся n тестов, потом они перемешиваются.
+        private const bool SHOWRESULINSTANT = true;  //  true - результат ответа показывается сразу, после его введения. false - показывается только итоговый результат в конце теста. 
+        private const int FIRSTQUESTION = 0;  //  Номер вопроса с которого будет начинаться отбор тестов. Следует использовать, если хотите прорешать определённый вариант. Работает, если SHUFFLETHENTAKE установлен в false.
+        private const string LOCATION = "avs_demo.txt";  //  Расположение файла с вопросами
+
+
+
         private static List<Question> questions = new List<Question>();
+
+        static void PrintSettings()
+        {
+            Console.WriteLine("\n***ТЕКУЩИЕ НАСТРОЙКИ***\n");
+            Console.WriteLine($"SHUFFLETHENTAKE = {SHUFFLETHENTAKE} (перемешать все тесты перед тем, как выбрать n штук)");
+            Console.WriteLine($"SHOWRESULINSTANT = {SHOWRESULINSTANT} (мгновенное отображать правильность ответа на вопрос)");
+            if(!SHUFFLETHENTAKE)
+                Console.WriteLine($"FIRSTQUESTION = {FIRSTQUESTION} (пропустить заданное количество вопросов)");
+            Console.WriteLine($"\nНастроить данные параметры и прочитать более точное описание можно в начале программы\n");
+
+        }
 
         //Проверка диапазона включает граничные значения
         static int EnterIntInRange(int min, int max)
@@ -51,6 +76,7 @@ namespace AVS5
             if (SHUFFLETHENTAKE)
                 questions.Shuffle();
             Console.WriteLine($"Тесты успешно загружены ({questions.Count} шт.)");
+            PrintSettings();
             return true;
         }
 
@@ -60,9 +86,16 @@ namespace AVS5
             Console.WriteLine("Нажмите на любую клавишу...");
             Console.ReadKey();
             Console.Clear();
-            Console.Write($"Выберите количество вопросов (1-{questions.Count}): ");
+            if (!SHUFFLETHENTAKE)
+                Console.Write($"Выберите количество вопросов (1-{questions.Count - FIRSTQUESTION}) (пропущено {FIRSTQUESTION} вопросов): ");
+            else
+                Console.Write($"Выберите количество вопросов (1-{questions.Count}): ");
             amountOfTests = EnterIntInRange(1, questions.Count);
-            List<Question> questionsForTest = questions.Take(amountOfTests).ToList();
+            List<Question> questionsForTest;
+            if (SHUFFLETHENTAKE)
+                questionsForTest = questions.Take(amountOfTests).ToList();
+            else
+                questionsForTest = questions.Skip(FIRSTQUESTION).Take(amountOfTests).ToList();
             if (!SHUFFLETHENTAKE)
                 questionsForTest.Shuffle();
             BeginTest(questionsForTest);
@@ -81,6 +114,21 @@ namespace AVS5
                 Console.Write("Ваш ответ (1-5): ");
                 questionsForTest[i].ChosenAnswer = EnterIntInRange(1, 5);
                 questionsForTest[i].IsRight = questionsForTest[i].RightAnswer == questionsForTest[i].ChosenAnswer;
+                if (SHOWRESULINSTANT)
+                {
+                    Console.WriteLine();
+                    if (questionsForTest[i].IsRight)
+                    {
+                        Console.WriteLine("Правильно");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Неправильно");
+                        Console.WriteLine($"Правильный ответ: {questionsForTest[i].RightAnswer}");
+                    }
+                    Console.WriteLine("\nНажмите на любую клавишу...");
+                    Console.ReadKey();
+                }
             }
             EndTest(questionsForTest);
         }
