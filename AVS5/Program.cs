@@ -8,6 +8,7 @@ namespace AVS5
 {
     class Program
     {
+        private const bool SHUFFLETHENTAKE = false;  // true - сначала тесты перемешиваются, потом из них берутся первые n штук. false - сначала из исходного списка берётся n тестов, потом они перемешиваются.
         private const string LOCATION = "avs_demo.txt";
         private static List<Question> questions = new List<Question>();
 
@@ -47,7 +48,8 @@ namespace AVS5
                     return false;
                 }
             }
-            questions.Shuffle();
+            if (SHUFFLETHENTAKE)
+                questions.Shuffle();
             Console.WriteLine($"Тесты успешно загружены ({questions.Count} шт.)");
             return true;
         }
@@ -60,7 +62,9 @@ namespace AVS5
             Console.Clear();
             Console.Write($"Выберите количество вопросов (1-{questions.Count}): ");
             amountOfTests = EnterIntInRange(1, questions.Count);
-            List<Question> questionsForTest = questions.Shuffle().Take(amountOfTests).ToList();
+            List<Question> questionsForTest = questions.Take(amountOfTests).ToList();
+            if (!SHUFFLETHENTAKE)
+                questionsForTest.Shuffle();
             BeginTest(questionsForTest);
         }
 
