@@ -17,6 +17,18 @@ namespace AVS5
         //#                    #
         //#                    #
         //######################
+
+        /*
+        * Как работает SHUFFLETHENTAKE?
+        * Пусть у нас есть последовательность чисел (номера вопросов) 123456789
+        * Допустим мы хотим потренеровать 5 вопросов
+        * Если SHUFFLETHENTAKE = true, то произойдет следующее: 123456789 ---(перемешиваем вопросы)---> 476592138 ---(берём 5 штук)---> 47659 - пул вопросов, которые будут появляться.
+        * Если SHUFFLETHENTAKE = false, то произойдет следующее: 123456789 ---(берём 5 штук)---> 12345 ---(перемешиваем)---> 43125 - пул вопросов, которые будут появлятся.
+        * 
+        * Если мы хотим, допустим, потренеровать с 20 по 80 вопрос, то делаем следующее:
+        * Устанавливаем SHUFFLETHENTAKE в false, FIRSTQUESTION приравниваем числу 20. Затем, в программе, указываем, что нам нужно 60 вопросов (80-20).
+        */
+
         private const bool SHUFFLETHENTAKE = true;  // true - сначала все вопросы перемешиваются, потом из них берутся первые n штук. false - сначала из исходного упорядоченного списка берётся n тестов, потом они перемешиваются.
         private const bool SHOWRESULINSTANT = true;  //  true - результат ответа показывается сразу, после его введения. false - показывается только итоговый результат в конце теста. 
         private const int FIRSTQUESTION = 0;  //  Номер вопроса с которого будет начинаться отбор тестов. Следует использовать, если хотите прорешать определённый вариант. Работает, если SHUFFLETHENTAKE установлен в false.
@@ -93,6 +105,10 @@ namespace AVS5
             else
                 Console.Write($"Выберите количество вопросов (1-{questions.Count}): ");
             amountOfTests = EnterIntInRange(1, questions.Count);
+            if(!SHUFFLETHENTAKE)
+                Console.WriteLine($"\nБудут использованы вопросы №{FIRSTQUESTION + 1} - {FIRSTQUESTION + amountOfTests} из исходного списка\n");
+            else
+                Console.WriteLine($"\nВопросы будут выбраны из всего списка\n");
             List<Question> questionsForTest;
             if (SHUFFLETHENTAKE)
                 questionsForTest = questions.Take(amountOfTests).ToList();
