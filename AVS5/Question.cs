@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace AVS5
 {
@@ -13,10 +16,25 @@ namespace AVS5
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(Text);
-            foreach (string s in Variants.Split(';'))
-                sb.AppendLine(s.Trim());
-            return sb.ToString();
+            if (!Program.RANDOMIZEANSWERS)
+            {
+                //  Do not randomize possible answers
+                sb.AppendLine(Text);
+                foreach (string s in Variants.Split(';'))
+                    sb.AppendLine(s.Trim());
+                return sb.ToString();
+            }
+            else
+            {
+                //  Randomize possible answers
+                string[] splittedVariants = Variants.Split(';').Where(s => s != "").Select(s => s).ToArray();
+                string rightAnswerText = splittedVariants[RightAnswer - 1];
+                RightAnswer = Array.IndexOf(splittedVariants, rightAnswerText) + 1;
+                splittedVariants = new List<string>(splittedVariants).Shuffle().ToArray();
+                for (int i = 0; i < splittedVariants.Length; i++)
+                    sb.AppendLine($"{i + 1}) {splittedVariants[i].Trim().Substring(3)}");
+                return sb.ToString();
+            }
         }
     }
 }

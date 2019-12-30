@@ -17,10 +17,11 @@ namespace AVS5
         //#                    #
         //#                    #
         //######################
-        private const bool SHUFFLETHENTAKE = true;  // true - сначала все тесты перемешиваются, потом из них берутся первые n штук. false - сначала из исходного упорядоченного списка берётся n тестов, потом они перемешиваются.
+        private const bool SHUFFLETHENTAKE = true;  // true - сначала все вопросы перемешиваются, потом из них берутся первые n штук. false - сначала из исходного упорядоченного списка берётся n тестов, потом они перемешиваются.
         private const bool SHOWRESULINSTANT = true;  //  true - результат ответа показывается сразу, после его введения. false - показывается только итоговый результат в конце теста. 
         private const int FIRSTQUESTION = 0;  //  Номер вопроса с которого будет начинаться отбор тестов. Следует использовать, если хотите прорешать определённый вариант. Работает, если SHUFFLETHENTAKE установлен в false.
         private const string LOCATION = "avs_demo.txt";  //  Расположение файла с вопросами
+        public const bool RANDOMIZEANSWERS = false;  //  true - варианты ответов распологаются в случайном порядке. false - варианты ответов стоят на одном месте
 
 
 
@@ -31,6 +32,7 @@ namespace AVS5
             Console.WriteLine("\n***ТЕКУЩИЕ НАСТРОЙКИ***\n");
             Console.WriteLine($"SHUFFLETHENTAKE = {SHUFFLETHENTAKE} (перемешать все тесты перед тем, как выбрать n штук)");
             Console.WriteLine($"SHOWRESULINSTANT = {SHOWRESULINSTANT} (мгновенное отображать правильность ответа на вопрос)");
+            Console.WriteLine($"RANDOMIZEANSWERS = {RANDOMIZEANSWERS} (рандомизация вариантов ответа)");
             if(!SHUFFLETHENTAKE)
                 Console.WriteLine($"FIRSTQUESTION = {FIRSTQUESTION} (пропустить заданное количество вопросов)");
             Console.WriteLine($"\nНастроить данные параметры и прочитать более точное описание можно в начале программы\n");
