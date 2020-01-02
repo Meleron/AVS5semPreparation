@@ -33,7 +33,7 @@ namespace AVS5
         private const bool SHOWRESULINSTANT = true;  //  true - результат ответа показывается сразу, после его введения. false - показывается только итоговый результат в конце теста. 
         private const int FIRSTQUESTION = 0;  //  Номер вопроса с которого будет начинаться отбор тестов. Следует использовать, если хотите прорешать определённый вариант. Работает, если SHUFFLETHENTAKE установлен в false.
         private const string LOCATION = "avs_demo.txt";  //  Расположение файла с вопросами
-        public const bool RANDOMIZEANSWERS = false;  //  true - варианты ответов распологаются в случайном порядке. false - варианты ответов стоят на одном месте
+        public const bool RANDOMIZEANSWERS = true;  //  true - варианты ответов распологаются в случайном порядке. false - варианты ответов стоят на одном месте
 
 
 
