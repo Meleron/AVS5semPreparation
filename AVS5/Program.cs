@@ -173,7 +173,7 @@ namespace AVS5
                             else
                                 Console.WriteLine("\n*******************************");
                             Console.WriteLine(q);
-                            Console.WriteLine($"\nПравльный ответ: {q.RightAnswer}\nВаш ответ: {q.ChosenAnswer}\n");
+                            Console.WriteLine($"\nПравильный ответ: {q.RightAnswer}\nВаш ответ: {q.ChosenAnswer}\n");
                         }
                         Console.WriteLine("Нажмите любую клавишу для выхода");
                         Console.ReadKey();
@@ -191,7 +191,7 @@ namespace AVS5
                         {
                             Console.WriteLine("\n*******************************");
                             Console.WriteLine(q);
-                            Console.WriteLine($"Правльный ответ: {q.RightAnswer}\nВаш ответ: {q.ChosenAnswer}\n");
+                            Console.WriteLine($"Правильный ответ: {q.RightAnswer}\nВаш ответ: {q.ChosenAnswer}\n");
                         }
                         Console.WriteLine("Нажмите любую клавишу для выхода");
                         Console.ReadKey();
